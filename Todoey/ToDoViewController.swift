@@ -10,7 +10,7 @@ import UIKit
 
 class ToDoViewController: UITableViewController {
 
-    let itemArray = ["First Item", "Second Item", "Third Item"]
+    var itemArray = ["First Item", "Second Item", "Third Item"]
     
     
     override func viewDidLoad() {
@@ -23,7 +23,26 @@ class ToDoViewController: UITableViewController {
         
     }
 
-
+    @IBAction func addButtonPressed(_ sender: Any) {
+        var textField = UITextField()
+        let alert = UIAlertController(title: "Add New ToDo Item", message: "", preferredStyle: .alert)
+        
+        let alertAction = UIAlertAction(title: "Add", style: .default) { (action) in
+            if textField.text != "" {
+            self.itemArray.append(textField.text!)
+            self.tableView.reloadData()
+            }
+        }
+            alert.addTextField {
+                (alertTextField) in
+                alertTextField.placeholder = "Create new item"
+                textField = alertTextField
+            }
+            alert.addAction(alertAction)
+            
+            present(alert, animated: true, completion: nil)
+        }
+    
     //MARK - DataSource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
