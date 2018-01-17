@@ -11,11 +11,13 @@ import UIKit
 class ToDoViewController: UITableViewController {
 
     var itemArray = ["First Item", "Second Item", "Third Item"]
-    
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        if let items = defaults.array(forKey: "ToDoList") as? [String] {
+            itemArray = items
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,18 +31,20 @@ class ToDoViewController: UITableViewController {
         
         let alertAction = UIAlertAction(title: "Add", style: .default) { (action) in
             if textField.text != "" {
-            self.itemArray.append(textField.text!)
-            self.tableView.reloadData()
+                self.itemArray.append(textField.text!)
+                self.defaults.set(self.itemArray, forKey: "ToDoList")
+                self.tableView.reloadData()
             }
         }
-            alert.addTextField {
+        alert.addTextField {
                 (alertTextField) in
                 alertTextField.placeholder = "Create new item"
                 textField = alertTextField
-            }
-            alert.addAction(alertAction)
+        }
+        alert.addAction(alertAction)
             
-            present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
+        
         }
     
     //MARK - DataSource
